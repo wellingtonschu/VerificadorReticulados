@@ -15,13 +15,10 @@ namespace VerificadorReticulados
         private Int64[][] matrizElementoInferiores;
         private Int64[][] novaMatriz;
 
-        int[] listaEulariana;
-        int[] listaAdjacentes;
         int[] listaValorSupremo;
         int[] listaValorInfimo;
-
-        int[] armazenaVertice;
-        int[] armazenaChegadas;
+        int[] listaAdjacentesValor01;
+        int[] listaAdjacentesValor02;
 
         public static int numerosVisitados = getNumPontos();
 
@@ -30,32 +27,111 @@ namespace VerificadorReticulados
         private int armazenaIteracaoElementoSupremo;
         private int armazenaIteracaoElementoInfimo;
 
-        private int varificaValoresIguais = 0;
-
-        private int maior01 = 0;
-        private int segundoMaior01 = 0;
-        private int maior02 = 0;
-        private int segundoMaior02 = 0;
-        private int menor01 = 1000000;
-        private int segundoMenor01 = 1000000;
-        private int menor02 = 1000000;
-        private int segundoMenor02 = 1000000;
-        private int menor03 = 1000000;
+        private int maior = 0;
+        private int menor = 1000000;
 
         private int valorParada = 0;
 
-        int contatarElementosValor01 = 0;
-        int contatarElementosValor02 = 0;
-        int contatarIgualdade = 0;
+        int contadorElementosValor01 = 0;
+        int contadorElementosValor02 = 0;
+        int contadorIgualdade = 0;
 
-        int grau01 = 0;
-        int grau02 = 0;
+        int valorFinal = 0;
 
-        int contadorImpares = 0;
+        int contador01;
+        int contadorLigacoes;
 
-        int armazenaElementoInfimo = 0;
-        int armazenaElementoSupremo = 0;
+        int contadorIgualdadeElementosMesmoNivel01 = 0;
+        int contadorIgualdadeElementosMesmoNivel02 = 0;
 
+        int armazenaValorListaAdjacente = 0;
+
+        public Funcoes(int numeroDePontos)
+        {
+            setMatrizPesos(criacaoMatrizPesos(numeroDePontos, 0));
+            setMatrizElementoSuperiores(criacaoMatrizPesos(numeroDePontos, 0));
+            setMatrizElementoInferiores(criacaoMatrizPesos(numeroDePontos, 0));
+            setNovaMatriz(criacaoMatrizPesos(numeroDePontos, 0));
+
+            numPontos = numeroDePontos;
+
+            this.visitados = new Boolean[numeroDePontos];
+        }
+
+        public Int64[][] criacaoMatrizPesos(int tamanho, Int64 tipoLigacao)
+        {
+            Int64[][] matriz = new Int64[tamanho + 1][];
+
+            for(int i = 0; i < tamanho; i++)
+            {
+                matriz[i] = new Int64[tamanho + 1];
+
+                for(int j = 0; j < tamanho; i++)
+                {
+                    matriz[i][j] = tipoLigacao;
+                }
+            }
+
+            return matriz;
+        }
+
+        public void insereAresta(int A, int B, int peso)
+        {
+            matrizPesos[A][B] = peso;
+            matrizPesos[A][B] = peso;
+        }
+
+        public void retirarAresta(int A, int B)
+        {
+            matrizPesos[A][B] = 0;
+            matrizPesos[A][B] = 0;
+        }
+
+        public void imprimeMatrizElementosSuperiores(Int64[][] matriz)
+        {
+            Console.WriteLine("Matriz de elementos Superiores");
+
+            for(int i = 0; i < getNumPontos(); i++)
+            {
+                Console.WriteLine("" + (i++) + " - ");
+
+                for(int j = 0; j < getNumPontos(); j++)
+                {
+                    Console.WriteLine("[" + matriz[i][j] + "] ");
+                }
+                Console.WriteLine("\n");
+            }
+            Console.WriteLine("\n");
+        }
+
+        public void imprimeMatrizElementosInferiores(Int64[][] matriz)
+        {
+            Console.WriteLine("Matriz de elementos Inferiores");
+
+            for(int i = 0; i < getNumPontos(); i++)
+            {
+                Console.WriteLine("" + (i++) + "");
+
+                for(int j = 0; j < getNumPontos(); j++)
+                {
+                    Console.WriteLine("[" + matriz[i][j] + "] ");
+                }
+                Console.WriteLine("\n");
+            }
+            Console.WriteLine("\n");
+        }
+
+        public void limpaMatriz()
+        {
+            for(int i = 0; i < getNumPontos(); i++)
+            {
+                for(int j= 0; j < getNumPontos(); j++)
+                {
+                    matrizElementoSuperiores[i][j] = 0;
+                    matrizElementoInferiores[i][j] = 0;
+                }
+            }
+        }
 
         public Int64[][] getMatrizPesos()
         {
