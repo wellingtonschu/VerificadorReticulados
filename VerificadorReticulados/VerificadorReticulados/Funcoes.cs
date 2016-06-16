@@ -133,6 +133,118 @@ namespace VerificadorReticulados
             }
         }
 
+        private void elementoSuperior(int vertice)
+        {
+            visitados[vertice] = true;
+
+            while(true)
+            {
+                matrizElementoSuperiores[armazenaIteracaoElementoSupremo][vertice] = vertice++;
+
+                for(int i = 0; i < getNumPontos(); i++)
+                {
+                    if(matrizPesos[vertice][i] != 0)
+                    {
+                        if(!visitados[i] && i > vertice)
+                        {
+                            elementoSuperior(i);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        public void identificaElementosSuperiores()
+        {
+            for(int i = 0; i < getNumPontos(); i++)
+            {
+                armazenaIteracaoElementoSupremo = i;
+                elementoSuperior(i);
+
+                for(int j = 0; j < getNumPontos(); j++)
+                {
+                    visitados[j] = false;
+                }
+            }
+        }
+
+        private void elementoInferior(int vertice)
+        {
+            visitados[vertice] = true;
+
+            while (true)
+            {
+                matrizElementoInferiores[armazenaIteracaoElementoInfimo][vertice] = vertice++;
+
+                for(int i = 0; i < getNumPontos(); i++)
+                {
+                    if(matrizPesos[i][vertice] != 0)
+                    {
+                        if(!visitados[i] && i < vertice)
+                        {
+                            elementoInferior(i);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        public void identificaElementosInferiores()
+        {
+            for(int i = 0; i < getNumPontos(); i++)
+            {
+                armazenaIteracaoElementoInfimo = i;
+                elementoInferior(i);
+
+                for(int j = 0; j < getNumPontos(); j++)
+                {
+                    visitados[j] = false;
+                }
+            }
+        }
+
+        public void identificaInfimo(int verifica, int[] vetor, int valor01, int valor02)
+        {
+            int auxiliar;
+            maior = 0;
+
+            for(int i = 0; i < verifica; i++)
+            {
+                auxiliar = vetor[i];
+
+                if(maior < auxiliar)
+                {
+                    maior = vetor[i];
+                }
+            }
+            Console.WriteLine("Fronteira Inferior Máxima de " + (valor01 + 1) + " e " + (valor02 + 1) + " -> " + "[" + maior + "]");
+            Console.WriteLine("\n\n");
+        }
+
+        public void identificaSupremo(int verifica, int[] vetor, int valor01, int valor02)
+        {
+            int auxiliar;
+
+            for(int i = 0; i < verifica; i++)
+            {
+                if(vetor[i] != 0)
+                {
+                    auxiliar = vetor[i];
+
+                    if(menor > auxiliar)
+                    {
+                        menor = vetor[i];
+                    }
+                }
+            }
+            Console.WriteLine("Fronteira Superior Minima de " + (valor01 + 1) + " e " + (valor02 + 1) + " -> " + "[" + maior + "]");
+            Console.WriteLine("\n");
+        }
+
+
+
         public Int64[][] getMatrizPesos()
         {
             return this.matrizPesos;
