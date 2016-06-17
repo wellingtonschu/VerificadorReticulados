@@ -259,7 +259,8 @@ namespace VerificadorReticulados
                         contadorListaAdjacentes++;
                     }
                 }
-            } else
+            }
+            else
             {
                 listaAdjacentesValor02 = new int[getNumNodos()];
 
@@ -317,15 +318,50 @@ namespace VerificadorReticulados
             if(contadorIgualdade == 0)
             {
                 Console.WriteLine("Não existe fronteira superior para os elementos " + (valor01 + 1) + " e " + (valor02 + 1) + ".\n");
-            } else
+            }
+            else
             {
                 Console.WriteLine("Fronteira Superior dos elementos " + (valor01 + 1) + " e " + (valor02 + 1) + ": ");
                 for(int i = 0; i < contadorIgualdade; i++)
                 {
                     if(listaValorSupremo[i] != 0)
                     {
-                        Console.WriteLine
+                        Console.WriteLine("[" + (listaValorSupremo[i]) + "]");
                     }
+                }
+                Console.WriteLine("\n");
+
+                listaAdjacentes(valor01, 1);
+                listaAdjacentes(valor02, 2);
+
+                for(int j = 0; j < getNumNodos(); j++)
+                {
+                    armazenaValorListaAdjacente = 0;
+
+                    if(listaAdjacentesValor01[j] > (valor01 + 1) && listaAdjacentesValor01[j] > (valor02 + 1))
+                    {
+                        armazenaValorListaAdjacente = listaAdjacentesValor01[j];
+                    }
+
+                    if(armazenaValorListaAdjacente != 0)
+                    {
+                        for(int i = 0; i < getNumNodos(); i++)
+                        {
+                            if(armazenaValorListaAdjacente == listaAdjacentesValor02[i])
+                            {
+                                contadorIgualdadeElementosMesmoNivel01++;
+                            }
+                        }
+                    }
+                }
+
+                if(contadorIgualdadeElementosMesmoNivel01 == 2)
+                {
+                    Console.WriteLine("Não possui fronteira superior mínima.");
+                }
+                else
+                {
+                    identificaSupremo(contadorIgualdade, listaValorSupremo, valor01, valor02);
                 }
             }
         }
