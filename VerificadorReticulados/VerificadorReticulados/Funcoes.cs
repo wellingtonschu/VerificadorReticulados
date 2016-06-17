@@ -8,7 +8,7 @@ namespace VerificadorReticulados
 {
     class Funcoes
     {
-        public static int numPontos;
+        public static int numNodos;
 
         private Int64[][] matrizPesos;
         private Int64[][] matrizElementoSuperiores;
@@ -20,7 +20,7 @@ namespace VerificadorReticulados
         int[] listaAdjacentesValor01;
         int[] listaAdjacentesValor02;
 
-        public static int numerosVisitados = getNumPontos();
+        public static int numerosVisitados = getNumNodos();
 
         Boolean[] visitados = new Boolean[numerosVisitados];
 
@@ -46,16 +46,16 @@ namespace VerificadorReticulados
 
         int armazenaValorListaAdjacente = 0;
 
-        public Funcoes(int numeroDePontos)
+        public Funcoes(int numeroDeNodos)
         {
-            setMatrizPesos(criacaoMatrizPesos(numeroDePontos, 0));
-            setMatrizElementoSuperiores(criacaoMatrizPesos(numeroDePontos, 0));
-            setMatrizElementoInferiores(criacaoMatrizPesos(numeroDePontos, 0));
-            setNovaMatriz(criacaoMatrizPesos(numeroDePontos, 0));
+            setMatrizPesos(criacaoMatrizPesos(numeroDeNodos, 0));
+            setMatrizElementoSuperiores(criacaoMatrizPesos(numeroDeNodos, 0));
+            setMatrizElementoInferiores(criacaoMatrizPesos(numeroDeNodos, 0));
+            setNovaMatriz(criacaoMatrizPesos(numeroDeNodos, 0));
 
-            numPontos = numeroDePontos;
+            numNodos = numeroDeNodos;
 
-            this.visitados = new Boolean[numeroDePontos];
+            this.visitados = new Boolean[numeroDeNodos];
         }
 
         public Int64[][] criacaoMatrizPesos(int tamanho, Int64 tipoLigacao)
@@ -91,11 +91,11 @@ namespace VerificadorReticulados
         {
             Console.WriteLine("Matriz de elementos Superiores");
 
-            for(int i = 0; i < getNumPontos(); i++)
+            for(int i = 0; i < getNumNodos(); i++)
             {
                 Console.WriteLine("" + (i++) + " - ");
 
-                for(int j = 0; j < getNumPontos(); j++)
+                for(int j = 0; j < getNumNodos(); j++)
                 {
                     Console.WriteLine("[" + matriz[i][j] + "] ");
                 }
@@ -108,11 +108,11 @@ namespace VerificadorReticulados
         {
             Console.WriteLine("Matriz de elementos Inferiores");
 
-            for(int i = 0; i < getNumPontos(); i++)
+            for(int i = 0; i < getNumNodos(); i++)
             {
                 Console.WriteLine("" + (i++) + "");
 
-                for(int j = 0; j < getNumPontos(); j++)
+                for(int j = 0; j < getNumNodos(); j++)
                 {
                     Console.WriteLine("[" + matriz[i][j] + "] ");
                 }
@@ -123,9 +123,9 @@ namespace VerificadorReticulados
 
         public void limpaMatriz()
         {
-            for(int i = 0; i < getNumPontos(); i++)
+            for(int i = 0; i < getNumNodos(); i++)
             {
-                for(int j= 0; j < getNumPontos(); j++)
+                for(int j= 0; j < getNumNodos(); j++)
                 {
                     matrizElementoSuperiores[i][j] = 0;
                     matrizElementoInferiores[i][j] = 0;
@@ -141,7 +141,7 @@ namespace VerificadorReticulados
             {
                 matrizElementoSuperiores[armazenaIteracaoElementoSupremo][vertice] = vertice++;
 
-                for(int i = 0; i < getNumPontos(); i++)
+                for(int i = 0; i < getNumNodos(); i++)
                 {
                     if(matrizPesos[vertice][i] != 0)
                     {
@@ -157,12 +157,12 @@ namespace VerificadorReticulados
 
         public void identificaElementosSuperiores()
         {
-            for(int i = 0; i < getNumPontos(); i++)
+            for(int i = 0; i < getNumNodos(); i++)
             {
                 armazenaIteracaoElementoSupremo = i;
                 elementoSuperior(i);
 
-                for(int j = 0; j < getNumPontos(); j++)
+                for(int j = 0; j < getNumNodos(); j++)
                 {
                     visitados[j] = false;
                 }
@@ -177,7 +177,7 @@ namespace VerificadorReticulados
             {
                 matrizElementoInferiores[armazenaIteracaoElementoInfimo][vertice] = vertice++;
 
-                for(int i = 0; i < getNumPontos(); i++)
+                for(int i = 0; i < getNumNodos(); i++)
                 {
                     if(matrizPesos[i][vertice] != 0)
                     {
@@ -193,12 +193,12 @@ namespace VerificadorReticulados
 
         public void identificaElementosInferiores()
         {
-            for(int i = 0; i < getNumPontos(); i++)
+            for(int i = 0; i < getNumNodos(); i++)
             {
                 armazenaIteracaoElementoInfimo = i;
                 elementoInferior(i);
 
-                for(int j = 0; j < getNumPontos(); j++)
+                for(int j = 0; j < getNumNodos(); j++)
                 {
                     visitados[j] = false;
                 }
@@ -243,7 +243,92 @@ namespace VerificadorReticulados
             Console.WriteLine("\n");
         }
 
+        public void listaAdjacentes(int vertice, int primeiroOuSegundo)
+        {
+            int contadorListaAdjacentes = 0;
+            
+            if(primeiroOuSegundo == 1)
+            {
+                listaAdjacentesValor01 = new int[getNumNodos()];
 
+                for(int i = 0; i < getNumNodos(); i++)
+                {
+                    if(matrizPesos[vertice][i] == 1)
+                    {
+                        listaAdjacentesValor01[contadorListaAdjacentes] = (i + 1);
+                        contadorListaAdjacentes++;
+                    }
+                }
+            } else
+            {
+                listaAdjacentesValor02 = new int[getNumNodos()];
+
+                for(int i = 0; i < getNumNodos(); i++)
+                {
+                    if(matrizPesos[vertice][i] == 1)
+                    {
+                        listaAdjacentesValor02[contadorListaAdjacentes] = (i + 1);
+                        contadorListaAdjacentes++;
+                    }
+                }
+            }
+        }
+
+        public void identificaFronteiraSuperiorMinima(int valor01, int valor02)
+        {
+            listaValorSupremo = new int[getNumNodos()];
+
+            contadorElementosValor01 = 0;
+            contadorElementosValor02 = 0;
+            contadorIgualdade = 0;
+            contadorIgualdadeElementosMesmoNivel01 = 0;
+            armazenaValorListaAdjacente = 0;
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                listaValorSupremo[i] = 0;
+            }
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                if(matrizElementoSuperiores[valor01][i] != 0 && matrizElementoSuperiores[valor01][i] != (valor01 + 1))
+                {
+                    contadorElementosValor01++;
+                }
+            }
+
+            for (int i = 0; i < getNumNodos(); i++)
+            {
+                if (matrizElementoSuperiores[valor02][i] != 0 && matrizElementoSuperiores[valor02][i] != (valor02 + 1))
+                {
+                    contadorElementosValor02++;
+                }
+            }
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                if((matrizElementoSuperiores[valor01][i] != 0) && (matrizElementoSuperiores[valor01][i] == matrizElementoSuperiores[valor02][i]))
+                {
+                    listaValorSupremo[contadorIgualdade] = matrizElementoSuperiores[valor01][i];
+                    contadorIgualdade++;
+                }
+            }
+
+            if(contadorIgualdade == 0)
+            {
+                Console.WriteLine("Não existe fronteira superior para os elementos " + (valor01 + 1) + " e " + (valor02 + 1) + ".\n");
+            } else
+            {
+                Console.WriteLine("Fronteira Superior dos elementos " + (valor01 + 1) + " e " + (valor02 + 1) + ": ");
+                for(int i = 0; i < contadorIgualdade; i++)
+                {
+                    if(listaValorSupremo[i] != 0)
+                    {
+                        Console.WriteLine
+                    }
+                }
+            }
+        }
 
         public Int64[][] getMatrizPesos()
         {
@@ -285,9 +370,9 @@ namespace VerificadorReticulados
             this.novaMatriz = novaMatriz;
         }
 
-        public static int getNumPontos()
+        public static int getNumNodos()
         {
-            return numPontos;
+            return numNodos;
         }
     }
 }
