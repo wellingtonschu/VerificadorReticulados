@@ -6,54 +6,42 @@ namespace VerificadorReticulados
     {
         public static int numNodos;
 
-        private Int64[][] matrizPesos;
-        private Int64[][] matrizElementoSuperiores;
-        private Int64[][] matrizElementoInferiores;
-        private Int64[][] novaMatriz;
+        private static Int64[][] matrizPesos;
+        private static Int64[][] matrizElementoSuperiores;
+        private static Int64[][] matrizElementoInferiores;
+        private static Int64[][] novaMatriz;
 
-        Int64[] listaValorSupremo;
-        Int64[] listaValorInfimo;
-        Int64[] listaAdjacentesValor01;
-        Int64[] listaAdjacentesValor02;
+        static Int64[] listaValorSupremo;
+        static Int64[] listaValorInfimo;
+        static Int64[] listaAdjacentesValor01;
+        static Int64[] listaAdjacentesValor02;
 
         public static int numerosVisitados = getNumNodos();
 
-        Boolean[] visitados = new Boolean[numerosVisitados];
+        static Boolean[] visitados = new Boolean[numerosVisitados];
 
-        private int armazenaIteracaoElementoSupremo;
-        private int armazenaIteracaoElementoInfimo;
+        private static int armazenaIteracaoElementoSupremo;
+        private static int armazenaIteracaoElementoInfimo;
 
-        private Int64 maior = 0;
-        private Int64 menor = 1000000;
+        private static Int64 maior = 0;
+        private static Int64 menor = 1000000;
 
-        private int valorParada = 0;
+        private static int valorParada = 0;
 
-        int contadorElementosValor01 = 0;
-        int contadorElementosValor02 = 0;
-        int contadorIgualdade = 0;
+        static int contadorElementosValor01 = 0;
+        static int contadorElementosValor02 = 0;
+        static int contadorIgualdade = 0;
 
-        int valorFinal = 0;
+        static int valorFinal = 0;
 
-        int contador01;
-        int contadorLigacoes01;
-        int contadorLigacoes02;
+        static int contador01;
+        static int contadorLigacoes01;
+        static int contadorLigacoes02;
 
-        int contadorIgualdadeElementosMesmoNivel01 = 0;
-        int contadorIgualdadeElementosMesmoNivel02 = 0;
+        static int contadorIgualdadeElementosMesmoNivel01 = 0;
+        static int contadorIgualdadeElementosMesmoNivel02 = 0;
 
-        Int64 armazenaValorListaAdjacente = 0;
-
-        public Funcoes(int numeroDeNodos)
-        {
-            setMatrizPesos(criacaoMatrizPesos(numeroDeNodos, 0));
-            setMatrizElementoSuperiores(criacaoMatrizPesos(numeroDeNodos, 0));
-            setMatrizElementoInferiores(criacaoMatrizPesos(numeroDeNodos, 0));
-            setNovaMatriz(criacaoMatrizPesos(numeroDeNodos, 0));
-
-            numNodos = numeroDeNodos;
-
-            this.visitados = new Boolean[numeroDeNodos];
-        }
+        static Int64 armazenaValorListaAdjacente = 0;
 
         public Int64[][] criacaoMatrizPesos(int tamanho, Int64 tipoLigacao)
         {
@@ -72,7 +60,7 @@ namespace VerificadorReticulados
             return matriz;
         }
 
-        public void insereAresta(int A, int B, int peso)
+        public void insereAresta(Int64 A, Int64 B, Int64 peso)
         {
             matrizPesos[A][B] = peso;
             matrizPesos[A][B] = peso;
@@ -576,46 +564,6 @@ namespace VerificadorReticulados
                 Console.WriteLine("Não é reticulado, pois não possui limite mínimo ou limite máximo.");
             }
 
-        }
-
-        public Int64[][] getMatrizPesos()
-        {
-            return this.matrizPesos;
-        }
-
-        public void setMatrizPesos(Int64[][] pesos)
-        {
-            this.matrizPesos = pesos;
-        }
-
-        public Int64[][] getMatrizElementoSuperiores()
-        {
-            return this.matrizElementoSuperiores;
-        }
-
-        public void setMatrizElementoSuperiores(Int64[][] zero)
-        {
-            this.matrizElementoSuperiores = zero;
-        }
-
-        public Int64[][] getMatrizElementoInferiores()
-        {
-            return this.matrizElementoInferiores;
-        }
-
-        public void setMatrizElementoInferiores(Int64[][] zero)
-        {
-            this.matrizElementoInferiores = zero;
-        }
-
-        public Int64[][] getNovaMatriz()
-        {
-            return novaMatriz;
-        }
-
-        public void setNovaMatriz(Int64[][] novaMatriz)
-        {
-            this.novaMatriz = novaMatriz;
         }
 
         public static int getNumNodos()
