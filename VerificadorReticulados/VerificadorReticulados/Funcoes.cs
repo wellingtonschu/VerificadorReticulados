@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VerificadorReticulados
 {
@@ -15,10 +11,10 @@ namespace VerificadorReticulados
         private Int64[][] matrizElementoInferiores;
         private Int64[][] novaMatriz;
 
-        int[] listaValorSupremo;
-        int[] listaValorInfimo;
-        int[] listaAdjacentesValor01;
-        int[] listaAdjacentesValor02;
+        Int64[] listaValorSupremo;
+        Int64[] listaValorInfimo;
+        Int64[] listaAdjacentesValor01;
+        Int64[] listaAdjacentesValor02;
 
         public static int numerosVisitados = getNumNodos();
 
@@ -27,8 +23,8 @@ namespace VerificadorReticulados
         private int armazenaIteracaoElementoSupremo;
         private int armazenaIteracaoElementoInfimo;
 
-        private int maior = 0;
-        private int menor = 1000000;
+        private Int64 maior = 0;
+        private Int64 menor = 1000000;
 
         private int valorParada = 0;
 
@@ -39,12 +35,13 @@ namespace VerificadorReticulados
         int valorFinal = 0;
 
         int contador01;
-        int contadorLigacoes;
+        int contadorLigacoes01;
+        int contadorLigacoes02;
 
         int contadorIgualdadeElementosMesmoNivel01 = 0;
         int contadorIgualdadeElementosMesmoNivel02 = 0;
 
-        int armazenaValorListaAdjacente = 0;
+        Int64 armazenaValorListaAdjacente = 0;
 
         public Funcoes(int numeroDeNodos)
         {
@@ -205,9 +202,9 @@ namespace VerificadorReticulados
             }
         }
 
-        public void identificaInfimo(int verifica, int[] vetor, int valor01, int valor02)
+        public void identificaInfimo(Int64 verifica, Int64[] vetor, Int64 valor01, Int64 valor02)
         {
-            int auxiliar;
+            Int64 auxiliar;
             maior = 0;
 
             for(int i = 0; i < verifica; i++)
@@ -223,9 +220,9 @@ namespace VerificadorReticulados
             Console.WriteLine("\n\n");
         }
 
-        public void identificaSupremo(int verifica, int[] vetor, int valor01, int valor02)
+        public void identificaSupremo(Int64 verifica, Int64[] vetor, Int64 valor01, Int64 valor02)
         {
-            int auxiliar;
+            Int64 auxiliar;
 
             for(int i = 0; i < verifica; i++)
             {
@@ -249,7 +246,7 @@ namespace VerificadorReticulados
             
             if(primeiroOuSegundo == 1)
             {
-                listaAdjacentesValor01 = new int[getNumNodos()];
+                listaAdjacentesValor01 = new Int64[getNumNodos()];
 
                 for(int i = 0; i < getNumNodos(); i++)
                 {
@@ -262,7 +259,7 @@ namespace VerificadorReticulados
             }
             else
             {
-                listaAdjacentesValor02 = new int[getNumNodos()];
+                listaAdjacentesValor02 = new Int64[getNumNodos()];
 
                 for(int i = 0; i < getNumNodos(); i++)
                 {
@@ -277,7 +274,7 @@ namespace VerificadorReticulados
 
         public void identificaFronteiraSuperiorMinima(int valor01, int valor02)
         {
-            listaValorSupremo = new int[getNumNodos()];
+            listaValorSupremo = new Int64[getNumNodos()];
 
             contadorElementosValor01 = 0;
             contadorElementosValor02 = 0;
@@ -364,6 +361,221 @@ namespace VerificadorReticulados
                     identificaSupremo(contadorIgualdade, listaValorSupremo, valor01, valor02);
                 }
             }
+        }
+
+        public void indetificaFronteiraInferiorMaxima(int valor01, int valor02)
+        {
+            listaValorInfimo = new Int64[getNumNodos()];
+
+            contadorElementosValor01 = 0;
+            contadorElementosValor02 = 0;
+            contadorIgualdade = 0;
+            contadorIgualdadeElementosMesmoNivel01 = 0;
+            armazenaValorListaAdjacente = 0;
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                listaValorInfimo[i] = 0;
+            }
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                if(matrizElementoInferiores[valor01][i] != 0 && matrizElementoInferiores[valor01][i] != (valor01 + 1))
+                {
+                    contadorElementosValor01++;
+                }
+            }
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                if (matrizElementoInferiores[valor02][i] != 0 && matrizElementoInferiores[valor02][i] != (valor02 + 1))
+                {
+                    contadorElementosValor02++;
+                }
+            }
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                if((matrizElementoInferiores[valor01][i] != 0) && (matrizElementoInferiores[valor01][i] == matrizElementoInferiores[valor02][i]))
+                {
+                    listaValorInfimo[contadorIgualdade] = matrizElementoInferiores[valor01][i];
+                    contadorIgualdade++;
+                }
+            }
+
+            if(contadorIgualdade == 0)
+            {
+                Console.WriteLine("Não existe fronteira inferior para os elementos " + (valor01 + 1) + " e " + (valor02 + 1) + ".\n");
+            }
+            else
+            {
+                Console.WriteLine("Fronteira Inferior dos elementos " + (valor01 + 1) + " e " + (valor02 + 1) + ": ");
+
+                for(int i = 0; i < contadorIgualdade; i++)
+                {
+                    if(listaValorInfimo[i] != 0)
+                    {
+                        Console.WriteLine("[" + (listaValorInfimo[i]) + "]");
+                    }
+                }
+                Console.WriteLine("\n");
+
+                listaAdjacentes(valor01, 1);
+                listaAdjacentes(valor02, 2);
+
+                for(int i = 0; i < getNumNodos(); i++)
+                {
+                    armazenaValorListaAdjacente = 0;
+
+                    if(listaAdjacentesValor01[i] < (valor01 + 1) && listaAdjacentesValor01[i] < (valor02 + 1) && listaAdjacentesValor01[i] != 0 && listaAdjacentesValor01[i] != 0)
+                    {
+                        armazenaValorListaAdjacente = listaAdjacentesValor01[i];
+                    }
+
+                    if(armazenaValorListaAdjacente != 0)
+                    {
+                        for(int j = 0; j < getNumNodos(); j++)
+                        {
+                            if(armazenaValorListaAdjacente == listaAdjacentesValor02[j])
+                            {
+                                contadorIgualdadeElementosMesmoNivel01++;
+                            }
+                        }
+                    }
+                }
+                if(contadorIgualdadeElementosMesmoNivel01 == 2)
+                {
+                    Console.WriteLine("Não possui fronteira inferior máxima.");
+                }
+                else
+                {
+                    identificaInfimo(contadorIgualdade, listaValorInfimo, valor01, valor02);
+                }
+            }
+        }
+
+        public void complementoVerificacaoReticulado(int valor01, int valor02)
+        {
+            listaValorInfimo = new Int64[getNumNodos()];
+
+            contadorElementosValor01 = 0;
+            contadorElementosValor02 = 0;
+            contadorIgualdade = 0;
+            contadorIgualdadeElementosMesmoNivel01 = 0;
+            contadorIgualdadeElementosMesmoNivel02 = 0;
+
+            listaAdjacentes(valor01, 1);
+            listaAdjacentes(valor02, 2);
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                armazenaValorListaAdjacente = 0;
+
+                if(listaAdjacentesValor01[i] < (valor01 + 1) && listaAdjacentesValor02[1] < (valor02 + 1) && listaAdjacentesValor01[i] != 0 && listaAdjacentesValor01[i] != 0)
+                {
+                    armazenaValorListaAdjacente = listaAdjacentesValor01[i];
+                }
+
+                if(armazenaValorListaAdjacente != 0)
+                {
+                    for(int j = 0; j < getNumNodos(); j++)
+                    {
+                        if(armazenaValorListaAdjacente == listaAdjacentesValor02[j])
+                        {
+                            contadorIgualdadeElementosMesmoNivel01++;
+                        }
+                    }
+                }
+            }
+
+            listaAdjacentes(valor01, 1);
+            listaAdjacentes(valor02, 2);
+
+            for(int i = 0; i < getNumNodos(); i++)
+            {
+                armazenaValorListaAdjacente = 0;
+
+                if(listaAdjacentesValor01[i] > (valor01 + 1) && listaAdjacentesValor01[i] > (valor02 + 1))
+                {
+                    armazenaValorListaAdjacente = listaAdjacentesValor02[i];
+                }
+
+                if(armazenaValorListaAdjacente != 0)
+                {
+                    for(int j = 0; j < getNumNodos(); j++)
+                    {
+                        if(armazenaValorListaAdjacente == listaAdjacentesValor02[i])
+                        {
+                            contadorIgualdadeElementosMesmoNivel02++;
+                        }
+                    }
+                }
+            }
+
+            if (contadorIgualdadeElementosMesmoNivel01 == 2 || contadorIgualdadeElementosMesmoNivel02 == 2)
+            {
+                valorParada = 1;
+            }
+        }
+
+        public void verificaReticulado()
+        {
+            valorFinal = getNumNodos();
+            contador01 = 0;
+            contadorLigacoes01 = 0;
+            contadorLigacoes02 = 0;
+            valorParada = 0;
+
+            for(int i = 0; i < valorFinal; i++)
+            {
+                if(matrizElementoSuperiores[i][valorFinal - 1] == getNumNodos())
+                {
+                    contadorLigacoes01++;
+                }
+            }
+
+            for(int i = 0; i < valorFinal; i++)
+            {
+                if(matrizElementoInferiores[i][0] == 1)
+                {
+                    contadorLigacoes02++;
+                }
+            }
+
+            if((contadorLigacoes01 == valorFinal) && (contadorLigacoes02 == valorFinal))
+            {
+                for(int i = 0; i < valorFinal; i++)
+                {
+                    for(int j = 0; j < valorFinal; j++)
+                    {
+                        if((contador01 != i) && (contador01 > 1))
+                        {
+                            if(valorParada != 1)
+                            {
+                                complementoVerificacaoReticulado(i, contador01);
+                            }
+                        }
+                        contador01++;
+                    }
+                    contador01 = 0;
+                }
+                if(valorParada != 1)
+                {
+                    Console.WriteLine("\n");
+                    Console.WriteLine("É Reticulado.");
+                }
+                else
+                {
+                    Console.WriteLine("\n");
+                    Console.WriteLine("Não é reticulado, pois não existe fronteira inferior máxima e fronteira superior mínima em todos os pares de elementos.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n");
+                Console.WriteLine("Não é reticulado, pois não possui limite mínimo ou limite máximo.");
+            }
+
         }
 
         public Int64[][] getMatrizPesos()
