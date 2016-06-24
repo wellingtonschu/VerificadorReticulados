@@ -10,6 +10,15 @@ namespace VerificadorReticulados
     {
         static void Main(string[] args)
         {
+            Int64 numeroDeElementos;
+            Int64 saida = 0;
+            Int64 elemento01;
+            Int64 elemento02;
+
+            Console.WriteLine("Informe a quantidade de elementos: ");
+            numeroDeElementos = Convert.ToInt64(Console.ReadLine());
+
+            
         }
     }
 }
